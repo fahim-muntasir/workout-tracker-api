@@ -1,10 +1,9 @@
 const { pool } = require("../../db/dbConnection");
-const { Product } = require("../../models");
 
 const findAllItems = async ({
   page = 1,
   limit = 10,
-  sortBy = "createdat",
+  sortBy = "created_at",
   sortType = "desc",
   searchQuery = "",
   status = "",
@@ -18,10 +17,10 @@ const findAllItems = async ({
       SELECT *
       FROM (
         SELECT
-          p.*,
+          w.*,
           COUNT(*) OVER() AS total_count,
           ROW_NUMBER() OVER (ORDER BY ${sortBy} ${sortType === 'desc' ? 'DESC' : 'ASC'}) AS row_num
-        FROM products p
+        FROM workouts w
         WHERE 1=1
     `;
 
@@ -30,7 +29,7 @@ const findAllItems = async ({
     // Add conditions for search query and status
     if (searchQuery) {
       query += `
-        AND (title ILIKE $1 OR description ILIKE $1)
+        AND (exercise ILIKE $1 OR notes ILIKE $1)
       `;
       queryParams.push(`%${searchQuery}%`);
     }
@@ -61,16 +60,4 @@ const findAllItems = async ({
   }
 };
 
-const findItemsByItemsIds = async (ids) => {
-  const productIdsString = ids.map(id => `'${id}'`).join(',');
-
-  try {
-    const products = await Product.findItemByProductsIds(productIdsString);
-
-    return products.rows;
-  } catch (error) {
-    throw error;
-  }
-};
-
-module.exports = {findAllItems, findItemsByItemsIds};
+module.exports = {findAllItems};

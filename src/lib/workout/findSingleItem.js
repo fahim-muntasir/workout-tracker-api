@@ -1,13 +1,13 @@
-const { Product } = require("../../models");
+const { Workout } = require("../../models");
 const { notFoundError } = require("../../utils/error");
 
 const findSingleItem = async (id) => {
   try {
-    const result = await Product.findItemById(id);
+    const result = await Workout.findItemById(id);
 
     // Check if the user was found
     if (result.rows.length === 0) {
-      throw notFoundError("Product not found!");
+      throw notFoundError("Workout not found!");
     }
 
     // Return the user object
@@ -17,18 +17,4 @@ const findSingleItem = async (id) => {
   }
 };
 
-const existProduct = async (id) => {
-  try {
-    const product = await Product.findItemById(id);
-
-    if (product.rows.length !== 0) {
-      return product.rows[0];
-    }
-
-    return false;
-  } catch (error) {
-    throw error;
-  }
-};
-
-module.exports = { findSingleItem, existProduct };
+module.exports = { findSingleItem };

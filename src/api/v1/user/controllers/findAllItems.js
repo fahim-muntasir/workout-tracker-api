@@ -9,7 +9,7 @@ const findAllItems = async (req, res, next) => {
   const page = +req.query.page || 1;
   const limit = +req.query.limit || 10;
   const sortType = req.query.sortType || "desc";
-  const sortBy = req.query.sortBy || "createdat";
+  const sortBy = req.query.sortBy || "created_at";
 
   try {
     const { data, totalItems } = await user.findAllItems({
@@ -37,7 +37,7 @@ const findAllItems = async (req, res, next) => {
     // transfrom user data for response
     const users = transfromData({
       items: data,
-      selection: ["id", "name", "email", "role", "updatedat", "createdat"],
+      selection: ["id", "name", "email", "role", "updated_at", "created_at"],
       path: req.baseUrl + req.path,
     });
 

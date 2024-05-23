@@ -5,36 +5,47 @@ const updateItem = async ({ data = {}, id }) => {
   try {
     // Extract data from the input object
     const {
-      title,
-      avatar,
-      price,
-      description,
-      category,
-      tags,
+      workout_date,
+      exercise,
+      sets,
+      reps,
+      duration,
+      weight,
+      notes,
     } = data;
-  
+
     // Construct the SQL UPDATE query
     const query = {
       text: `
-        UPDATE products 
+        UPDATE workouts 
         SET 
-          title = COALESCE($1, title), 
-          avatar = COALESCE($2, avatar),  
-          price = COALESCE($3, price), 
-          description = COALESCE($4, description), 
-          category = COALESCE($5, category), 
-          tags = COALESCE($6, tags) 
-        WHERE id = $7 
+          workout_date = COALESCE($1, workout_date), 
+          exercise = COALESCE($2, exercise),  
+          sets = COALESCE($3, sets), 
+          reps = COALESCE($4, reps), 
+          duration = COALESCE($5, duration), 
+          weight = COALESCE($6, weight), 
+          notes = COALESCE($7, notes)
+        WHERE id = $8 
         RETURNING *
       `,
-      values: [title, avatar, price, description, category, tags, id]
+      values: [
+        workout_date, 
+        exercise, 
+        sets, 
+        reps, 
+        duration, 
+        weight, 
+        notes, 
+        id
+      ]
     };
 
     // Execute the query
     const result = await pool.query(query);
 
     if (result.rowCount === 0) {
-      throw notFoundError("Product not found!");
+      throw notFoundError("Workout not found!");
     }
 
     return result.rows[0];

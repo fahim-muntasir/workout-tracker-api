@@ -3,7 +3,7 @@ const { getTransfromSingleData } = require("../../../../utils/responseData");
 
 const findSingleItem = async (req, res, next) => {
   const { id } = req.params;
-console.log(id)
+  
   try {
     // find user by id
     const product = await workoutService.findSingleItem(id);

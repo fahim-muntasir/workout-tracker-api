@@ -1,12 +1,12 @@
-const { Order } = require("../../models");
+const { Exercise } = require("../../models");
 const { notFoundError } = require("../../utils/error");
 
 const deleteItem = async (id) => {
   try {
-    const result = await Order.deleteItemById(id);
+    const result = await Exercise.deleteItemById(id);
 
     if (result.rowCount === 0) {
-      throw notFoundError("Order not found!");
+      throw notFoundError("Exercise not found!");
     }
 
     // Return the deleted user object

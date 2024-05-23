@@ -59,44 +59,32 @@ router
 router
   .route("/v1/workouts")
   .get(workoutController.findAllItems)
-  .post(
-    authMiddleware,
-    workoutController.create
-  );
+  .post(authMiddleware, workoutController.create);
 
 router
   .route("/v1/workouts/:id")
   .get(workoutController.findSingleItem)
-  .patch(
-    authMiddleware,
-    workoutController.updateItem
-  )
-  .delete(
-    authMiddleware,
-    workoutController.deleteItem
-  );
+  .patch(authMiddleware, workoutController.updateItem)
+  .delete(authMiddleware, workoutController.deleteItem);
+
+router.get(
+  "/v1/users/workouts/:id",
+  authMiddleware,
+  workoutController.findAllItemsByUserId
+);
 // ======== api/v1 workout route end ========
 
 // ======== api/v1 exercise route start ========
 router
-  .route("/v1/exercise")
+  .route("/v1/exercises")
   .get(exerciseController.findAllItems)
-  .post(
-    authMiddleware,
-    exerciseController.create
-  );
+  .post(authMiddleware, exerciseController.create);
 
 router
-  .route("/v1/exercise/:id")
+  .route("/v1/exercises/:id")
   .get(exerciseController.findSingleItem)
-  .patch(
-    authMiddleware,
-    exerciseController.updateItem
-  )
-  .delete(
-    authMiddleware,
-    exerciseController.deleteItem
-  );
+  .patch(authMiddleware, exerciseController.updateItem)
+  .delete(authMiddleware, exerciseController.deleteItem);
 // ======== api/v1 exercise route end ========
 
 module.exports = router;

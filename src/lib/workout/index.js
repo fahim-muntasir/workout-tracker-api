@@ -1,8 +1,9 @@
 const create = require("./create");
-const { findSingleItem, existProduct } = require("./findSingleItem");
-const {findAllItems, findItemsByItemsIds} = require("./findAllItems");
+const { findSingleItem } = require("./findSingleItem");
+const { findAllItems } = require("./findAllItems");
 const updateItem = require("./updateItem");
 const deleteItem = require("./deleteItem");
+const findAllItemsByUserId = require("./findAllItemsByUserId");
 
 module.exports = {
   create,
@@ -10,6 +11,5 @@ module.exports = {
   findSingleItem,
   updateItem,
   deleteItem,
-  existProduct,
-  findItemsByItemsIds
+  findAllItemsByUserId,
 };

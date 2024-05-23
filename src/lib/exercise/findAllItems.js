@@ -3,11 +3,12 @@ const { pool } = require("../../db/dbConnection");
 const findAllItems = async ({
   page = 1,
   limit = 10,
-  sortBy = "createdat",
+  sortBy = "created_at",
   sortType = "desc",
   searchQuery = "",
-  status = "",
-  paymentstatus = ""
+  muscleGroup = "",
+  equipment = "",
+  difficultyLevel = ""
 }) => {
   try {
     // Calculate offset for pagination
@@ -15,42 +16,42 @@ const findAllItems = async ({
 
     // Construct the SQL query
     let query = `
-      SELECT orders.*,
-        (SELECT jsonb_build_object(
-          'id', profile.id,
-          'name', profile.name,
-          'email', profile.email
-        )
-        FROM profile
-        WHERE profile.id = orders.customer) AS customer,
+      SELECT *,
         COUNT(*) OVER() AS total_count
-      FROM orders
+      FROM exercises
       WHERE 1=1
     `;
 
     const queryParams = [];
 
-    // Add conditions for search query and status
+    // Add conditions for search query, muscle group, equipment, and difficulty level
     if (searchQuery) {
       query += `
-        AND (orders.title ILIKE $${queryParams.length + 1} OR orders.description ILIKE $${queryParams.length + 1})
+        AND (exercise_name ILIKE $${queryParams.length + 1} OR description ILIKE $${queryParams.length + 2})
       `;
-      queryParams.push(`%${searchQuery}%`);
-    }
-    if (status) {
-      query += `
-        AND orders.status = $${queryParams.length + 1}
-      `;
-      queryParams.push(status);
-    }
-    if (paymentstatus) {
-      query += `
-        AND orders.paymentstatus = $${queryParams.length + 1}
-      `;
-      queryParams.push(paymentstatus);
+      queryParams.push(`%${searchQuery}%`, `%${searchQuery}%`);
     }
 
-    // Add sorting, pagination and close the main query
+    if (muscleGroup) {
+      query += `
+        AND muscle_group = $${queryParams.length + 1}
+      `;
+      queryParams.push(muscleGroup);
+    }
+    if (equipment) {
+      query += `
+        AND equipment = $${queryParams.length + 1}
+      `;
+      queryParams.push(equipment);
+    }
+
+    if (difficultyLevel) {
+      query += `
+        AND difficulty_level = $${queryParams.length + 1}
+      `;
+      queryParams.push(difficultyLevel);
+    }
+
     query += `
       ORDER BY ${sortBy} ${sortType.toUpperCase()}
       OFFSET $${queryParams.length + 1}

@@ -17,6 +17,7 @@ const findSingleItem = async (req, res, next) => {
         "muscle_group",
         "difficulty_level",
         "description",
+        "equipment",
         "updated_at",
         "created_at",
       ],

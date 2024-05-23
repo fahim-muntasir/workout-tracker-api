@@ -10,7 +10,7 @@ const deleteItem = async (req, res, next) => {
     // generate the atuale data for the response
     const data = getTransfromSingleData({
       item: deletedUser,
-      selection: ["id", "name", "email", "role", "updatedat", "createdat"],
+      selection: ["id", "name", "email", "role", "updated_at", "created_at"],
     });
 
     const response = {
